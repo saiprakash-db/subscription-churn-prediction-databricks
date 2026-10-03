@@ -1,0 +1,34 @@
+# Raw datasets
+data/
+*.csv
+*.csv.7z
+*.zip
+*.7z
+*.parquet
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# MLflow
+mlruns/
+
+# Model artifacts
+*.pkl
+*.joblib
+
+# Databricks / generated files
+*.log
+.DS_Store
+Thumbs.db
