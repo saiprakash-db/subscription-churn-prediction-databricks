@@ -436,7 +436,14 @@ Completed:
 - [x] MLflow tracking
 - [x] Business insights
 
-Remaining:
+---
 
-- [ ] Final GitHub documentation and portfolio polish
-- [ ] Final project review
+# Author
+
+**Sai Prakash Lingala**
+
+B.Tech in Artificial Intelligence  
+Aspiring Data Analyst | Data Analytics & Engineering | AI | SQL | Python | Power BI | Databricks
+
+- GitHub: https://github.com/saiprakash-db
+- LinkedIn: https://www.linkedin.com/in/sai-prakash-lingala-400854287
