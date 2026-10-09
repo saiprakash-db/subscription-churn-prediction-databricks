@@ -6,6 +6,43 @@ The project combines data engineering, SQL analytics, cohort analysis, feature e
 
 ---
 
+## Project Links
+
+- **GitHub Repository:** https://github.com/saiprakash-db/subscription-churn-prediction-databricks
+- **Dataset:** https://www.kaggle.com/competitions/kkbox-churn-prediction-challenge
+- **Dashboard:** [Dashboard Preview](#dashboard-preview)
+
+---
+
+## Project Documentation
+
+The project documentation and supporting analysis are available in the GitHub repository.
+
+- [Business Insights](./docs/business_insights.md)
+- [Data Validation SQL](./sql/data_validation.sql)
+- [Business Analysis SQL](./sql/business_analysis.sql)
+- [Power BI Dashboard](./docs/kkbox_dashboard.png)
+---
+
+## Project Notebooks
+
+The project was developed using Python and PySpark notebooks in Databricks. The notebooks are also maintained in the GitHub repository.
+
+1. [01 — Create Customer Scope](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/01_create_customer_scope.ipynb)
+2. [02 — Clean Members](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/02_clean_members.ipynb)
+3. [03 — Process User Logs](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/03_process_user_logs.ipynb)
+4. [04 — Feature Engineering](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/04_feature_engineering.ipynb)
+5. [05 — Temporal Leakage Audit](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/05_temporal_leakage_audit.ipynb)
+6. [06 — Build ML Dataset](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/06_build_ml_dataset.ipynb)
+7. [07 — Cohort Retention Analysis](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/07_cohort_retention_analysis.ipynb)
+8. [08 — Train Churn Model](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/08_train_churn_model.ipynb)
+9. [09 — Model Evaluation & MLflow](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/09_model_evaluation_mlflow.ipynb)
+10. [10 — Business Insights](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/notebooks/10_business_insights.ipynb)
+
+> These links point to the project files stored in GitHub and represent the notebooks used in the Databricks batch pipeline.
+
+---
+
 ## Business Problem
 
 Subscription businesses need to understand:
@@ -125,10 +162,9 @@ Business Insights
        │
        ▼
 Power BI Dashboard
+
 ```
-
 ---
-
 # Data Preparation
 
 The project includes separate processing stages for:
@@ -231,14 +267,14 @@ The analysis examined:
 
 ## Example Cohort Churn Rates
 
-| Signup Cohort | Churn Rate |
-|---|---:|
-| 2015-01 | 12.30% |
-| 2015-02 | 10.57% |
-| 2015-03 | 8.83% |
-| 2015-07 | 4.86% |
-| 2015-09 | 4.81% |
-| 2015-10 | 4.30% |
+| **Signup Cohort** | **Churn Rate** |
+| :---------------- | :------------- |
+| 2015-01           | 12.30%         |
+| 2015-02           | 10.57%         |
+| 2015-03           | 8.83%          |
+| 2015-07           | 4.86%          |
+| 2015-09           | 4.81%          |
+| 2015-10           | 4.30%          |
 
 Among the 2015 cohorts analyzed:
 
@@ -266,10 +302,10 @@ The models were evaluated using a held-out test set.
 
 ## Model Comparison
 
-| Model | ROC-AUC | PR-AUC | Precision | Recall | F1 |
-|---|---:|---:|---:|---:|---:|
-| Logistic Regression | 0.8845 | 0.3272 | 0.2373 | 0.7720 | 0.3630 |
-| **Random Forest** | **0.9465** | **0.5666** | **0.3196** | **0.9137** | **0.4736** |
+| **Model**           | **ROC-AUC** | **PR-AUC** | **Precision** | **Recall** | **F1**     |
+| :------------------ | :---------- | :--------- | :------------ | :--------- | :--------- |
+| Logistic Regression | 0.8845      | 0.3272     | 0.2373        | 0.7720     | 0.3630     |
+| **Random Forest**   | **0.9465**  | **0.5666** | **0.3196**    | **0.9137** | **0.4736** |
 
 Random Forest performed better across all reported evaluation metrics and was selected as the stronger model for this project.
 
@@ -277,10 +313,10 @@ Random Forest performed better across all reported evaluation metrics and was se
 
 ## Random Forest Confusion Matrix
 
-| | Predicted Non-Churn | Predicted Churn |
-|---|---:|---:|
-| Actual Non-Churn | 32,413 | 4,939 |
-| Actual Churn | 219 | 2,320 |
+|                  | **Predicted Non-Churn** | **Predicted Churn** |
+| :--------------- | :---------------------- | :------------------ |
+| Actual Non-Churn | 32,413                  | 4,939               |
+| Actual Churn     | 219                     | 2,320               |
 
 The model identified a large proportion of actual churn customers, reflected by its **0.9137 recall**.
 
@@ -290,18 +326,18 @@ The model identified a large proportion of actual churn customers, reflected by 
 
 The Random Forest model identified the following features as the strongest contributors to model decisions:
 
-| Rank | Feature |
-|---:|---|
-| 1 | Days Since Last Transaction |
-| 2 | Auto-Renew Rate |
-| 3 | Cancel Rate |
-| 4 | Auto-Renew Count |
-| 5 | Cancel Count |
-| 6 | Transaction Count |
-| 7 | Average Amount Paid |
-| 8 | Registered Via |
-| 9 | Average Plan Days |
-| 10 | Total Amount Paid |
+| **Rank** | **Feature**                 |
+| :------- | :-------------------------- |
+| 1        | Days Since Last Transaction |
+| 2        | Auto-Renew Rate             |
+| 3        | Cancel Rate                 |
+| 4        | Auto-Renew Count            |
+| 5        | Cancel Count                |
+| 6        | Transaction Count           |
+| 7        | Average Amount Paid         |
+| 8        | Registered Via              |
+| 9        | Average Plan Days           |
+| 10       | Total Amount Paid           |
 
 The strongest signals were primarily related to **customer activity and subscription renewal/cancellation behavior**.
 
@@ -318,7 +354,6 @@ Experiment:
 ```text
 /Shared/kkbox-churn-model
 ```
-
 Tracked information includes:
 
 - Model type
@@ -399,20 +434,15 @@ The dashboard translates the analysis into actionable recommendations:
 4. **Focus on recent activity and renewal behavior**
 
    The strongest Random Forest drivers include **Days Since Last Transaction, Auto-Renew Rate, and Cancel Rate**.
-
+---
 ## Dashboard Preview
 
-The completed Power BI dashboard is stored in the repository under:
-
-```text
-docs/kkbox_dashboard.png
-```
+The completed Power BI dashboard is shown below.
 
 ![KKBOX Subscription Churn & Cohort Analysis](./docs/kkbox_dashboard.png)
-
 ---
-
 # Business Insights
+---
 
 ## 1. Auto-Renewal Is Strongly Associated With Churn
 
@@ -477,18 +507,18 @@ Use recent customer activity together with renewal and cancellation behavior whe
 
 # Key Project Results
 
-| Metric | Result |
-|---|---:|
-| Analytical Customers | 200,000 |
-| Overall Churn Rate | 6.39% |
-| Leakage-Safe Transactions | 3,172,115 |
-| Random Forest ROC-AUC | 0.9465 |
-| Random Forest PR-AUC | 0.5666 |
-| Random Forest Recall | 0.9137 |
-| Random Forest F1 | 0.4736 |
-| No Auto-Renewal Churn | 31.92% |
-| High-Cancellation Churn | 82.37% |
-| Auto-Renew + No Cancellation Churn | 0.60% |
+| **Metric**                         | **Result** |
+| :--------------------------------- | :--------- |
+| Analytical Customers               | 200,000    |
+| Overall Churn Rate                 | 6.39%      |
+| Leakage-Safe Transactions          | 3,172,115  |
+| Random Forest ROC-AUC              | 0.9465     |
+| Random Forest PR-AUC               | 0.5666     |
+| Random Forest Recall               | 0.9137     |
+| Random Forest F1                   | 0.4736     |
+| No Auto-Renewal Churn              | 31.92%     |
+| High-Cancellation Churn            | 82.37%     |
+| Auto-Renew + No Cancellation Churn | 0.60%      |
 
 ---
 
@@ -500,27 +530,28 @@ subscription-churn-prediction-databricks/
 ├── README.md
 │
 ├── notebooks/
-│   ├── 01_create_customer_scope
-│   ├── 02_clean_members
-│   ├── 03_process_user_logs
-│   ├── 04_feature_engineering
-│   ├── 05_temporal_leakage_audit
-│   ├── 06_build_ml_dataset
-│   ├── 07_cohort_retention_analysis
-│   ├── 08_train_churn_model
-│   ├── 09_model_evaluation_mlflow
-│   └── 10_business_insights
+│   ├── 01_create_customer_scope.ipynb
+│   ├── 02_clean_members.ipynb
+│   ├── 03_process_user_logs.ipynb
+│   ├── 04_feature_engineering.ipynb
+│   ├── 05_temporal_leakage_audit.ipynb
+│   ├── 06_build_ml_dataset.ipynb
+│   ├── 07_cohort_retention_analysis.ipynb
+│   ├── 08_train_churn_model.ipynb
+│   ├── 09_model_evaluation_mlflow.ipynb
+│   └── 10_business_insights.ipynb
 │
 ├── sql/
+│   ├── data_validation.sql
+│   └── business_analysis.sql
 │
 ├── models/
 │
 └── docs/
+    ├── business_insights.md
     └── kkbox_dashboard.png
 ```
-
 ---
-
 # Project Limitations
 
 - The project uses a deterministic **200,000-customer analytical scope** rather than the complete original training population.
