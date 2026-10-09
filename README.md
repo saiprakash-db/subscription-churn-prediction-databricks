@@ -18,11 +18,10 @@ The project combines data engineering, SQL analytics, cohort analysis, feature e
 
 The project documentation and supporting analysis are available in the GitHub repository.
 
-<<<<<<< Updated upstream
-- [Business Insights](./docs/business_insights.md)
-- [Data Validation SQL](./sql/data_validation.sql)
-- [Business Analysis SQL](./sql/business_analysis.sql)
-- [Power BI Dashboard](./docs/kkbox_dashboard.png)
+- [Business Insights](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/docs/business_insights.md)
+- [Data Validation SQL](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/sql/data_validation.sql)
+- [Business Analysis SQL](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/sql/business_analysis.sql)
+- [Power BI Dashboard](https://github.com/saiprakash-db/subscription-churn-prediction-databricks/blob/main/docs/kkbox_dashboard.png)
 
 ---
 
