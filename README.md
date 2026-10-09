@@ -18,10 +18,12 @@ The project combines data engineering, SQL analytics, cohort analysis, feature e
 
 The project documentation and supporting analysis are available in the GitHub repository.
 
+<<<<<<< Updated upstream
 - [Business Insights](./docs/business_insights.md)
 - [Data Validation SQL](./sql/data_validation.sql)
 - [Business Analysis SQL](./sql/business_analysis.sql)
 - [Power BI Dashboard](./docs/kkbox_dashboard.png)
+
 ---
 
 ## Project Notebooks
