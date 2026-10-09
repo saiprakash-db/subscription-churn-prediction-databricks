@@ -1,22 +1,28 @@
 # KKBOX Subscription Churn & Cohort Retention Analysis
 
-A batch data analytics and machine learning project that analyzes customer subscription behavior, cohort retention, and churn for a music streaming business using the KKBOX dataset.
+A batch data analytics and machine learning project that analyzes customer subscription behavior, cohort activity, and churn for a music streaming business using the KKBOX dataset.
 
-The project combines data engineering, SQL analytics, cohort analysis, feature engineering, machine learning, and MLflow experiment tracking in Databricks.
+The project combines data engineering, SQL analytics, cohort analysis, feature engineering, machine learning, MLflow experiment tracking, and Power BI visualization in Databricks.
 
 ---
 
 ## Business Problem
 
-Subscription businesses need to understand why customers stop renewing and which customer behaviors are associated with churn.
+Subscription businesses need to understand:
 
-This project focuses on three business questions:
+- Why customers stop renewing
+- Which subscription behaviors are associated with churn
+- How churn varies across customer signup cohorts
+- Which customer behaviors can help identify higher-risk customers
+- What actions can be taken to improve customer retention
 
-1. How does customer retention and churn vary across signup cohorts?
+This project focuses on three main business questions:
+
+1. How does customer churn and activity vary across signup cohorts?
 2. Which subscription and transaction behaviors are associated with churn?
 3. Can machine learning identify customers with higher churn risk?
 
-The analysis is designed as an **automated batch pipeline**, not a real-time system.
+The analysis is designed as an **automated batch pipeline**, not a real-time prediction system.
 
 ---
 
@@ -24,12 +30,15 @@ The analysis is designed as an **automated batch pipeline**, not a real-time sys
 
 - Build a reliable analytical customer scope from the KKBOX dataset
 - Clean and validate subscription and member data
+- Process historical transaction data
+- Perform temporal leakage auditing
 - Create leakage-safe customer-level features
-- Analyze retention and churn across signup cohorts
+- Analyze cohort activity and churn
 - Identify behavioral patterns associated with churn
 - Train and evaluate churn prediction models
-- Track experiments using MLflow
-- Translate analytical and ML results into business recommendations
+- Track model experiments using MLflow
+- Create business-focused Power BI visualizations
+- Translate analytical and machine learning results into business recommendations
 
 ---
 
@@ -42,6 +51,7 @@ The analysis is designed as an **automated batch pipeline**, not a real-time sys
 - **Spark MLlib**
 - **MLflow**
 - **Delta Lake**
+- **Power BI**
 - **GitHub**
 
 ---
@@ -50,7 +60,9 @@ The analysis is designed as an **automated batch pipeline**, not a real-time sys
 
 This project uses the **KKBOX Churn Prediction Challenge** dataset.
 
-Source: https://www.kaggle.com/competitions/kkbox-churn-prediction-challenge
+Source:
+
+https://www.kaggle.com/competitions/kkbox-churn-prediction-challenge
 
 The original dataset contains customer membership, transaction, and user activity information.
 
@@ -94,7 +106,7 @@ Temporal Leakage Audit
        ▼
 Feature Engineering
        │
-       ├──────────────► Cohort & Retention Analysis
+       ├──────────────► Cohort & Activity Analysis
        │
        ▼
 Leakage-Safe ML Dataset
@@ -110,11 +122,14 @@ MLflow Experiment Tracking
        │
        ▼
 Business Insights
+       │
+       ▼
+Power BI Dashboard
 ```
 
 ---
 
-## Data Preparation
+# Data Preparation
 
 The project includes separate processing stages for:
 
@@ -126,7 +141,7 @@ The project includes separate processing stages for:
 - Data quality validation
 - Temporal leakage auditing
 
-### Member Data
+## Member Data
 
 The raw member dataset contained invalid and missing age values.
 
@@ -134,7 +149,16 @@ Invalid ages were converted to null during cleaning, while missing demographic i
 
 A `has_member_data` indicator was also created to distinguish customers with and without member records.
 
-### Transaction Data
+Final customer-level handling included:
+
+- Invalid age → null
+- Missing/unknown gender → `unknown`
+- Missing member records → preserved
+- Missing member records identified using `has_member_data`
+
+---
+
+## Transaction Data
 
 The original transaction dataset was audited for:
 
@@ -150,13 +174,13 @@ The final leakage-safe transaction dataset contained:
 
 ---
 
-## Temporal Leakage Prevention
+# Temporal Leakage Prevention
 
-Temporal leakage was treated as an important part of the ML pipeline.
+Temporal leakage was treated as a critical part of the machine learning pipeline.
 
 The churn label is associated with the customer's February 2017 membership expiry.
 
-For each customer, transaction records occurring after their label expiry date were excluded from the ML feature set.
+For each customer, transaction records occurring after that customer's label expiry date were excluded from the ML feature set.
 
 Final validation confirmed:
 
@@ -168,7 +192,7 @@ This ensures that the model features are based only on information available bef
 
 ---
 
-## Feature Engineering
+# Feature Engineering
 
 Customer-level features were created from historical subscription and transaction behavior.
 
@@ -194,7 +218,7 @@ Class weighting was used during model training to account for the imbalance betw
 
 ---
 
-# Cohort & Retention Analysis
+# Cohort & Activity Analysis
 
 Customers were grouped into signup cohorts based on their registration month.
 
@@ -205,7 +229,7 @@ The analysis examined:
 - Month 12 activity for cohorts with sufficient history
 - Differences between early and later signup cohorts
 
-### Example Cohort Churn Rates
+## Example Cohort Churn Rates
 
 | Signup Cohort | Churn Rate |
 |---|---:|
@@ -222,6 +246,12 @@ Among the 2015 cohorts analyzed:
 - **2015-07 to 2015-12:** average churn rate of **5.11%**
 
 This indicates meaningful differences in churn behavior across signup cohorts.
+
+### Important Terminology
+
+The dashboard uses **Month 12 Activity Rate** rather than claiming literal subscription retention.
+
+This metric represents transaction activity among customers in a signup cohort and should not be interpreted as a direct subscription-retention measurement.
 
 ---
 
@@ -243,12 +273,16 @@ The models were evaluated using a held-out test set.
 
 Random Forest performed better across all reported evaluation metrics and was selected as the stronger model for this project.
 
-### Random Forest Confusion Matrix
+---
+
+## Random Forest Confusion Matrix
 
 | | Predicted Non-Churn | Predicted Churn |
 |---|---:|---:|
 | Actual Non-Churn | 32,413 | 4,939 |
 | Actual Churn | 219 | 2,320 |
+
+The model identified a large proportion of actual churn customers, reflected by its **0.9137 recall**.
 
 ---
 
@@ -277,7 +311,7 @@ Feature importance represents model influence and should not be interpreted as p
 
 # MLflow Experiment Tracking
 
-MLflow was used to track the model experiments.
+MLflow was used to track model experiments.
 
 Experiment:
 
@@ -298,6 +332,83 @@ Tracked information includes:
 - F1 score
 
 The trained Random Forest model was also saved to a Databricks Unity Catalog volume.
+
+---
+
+# Power BI Dashboard
+
+A one-page Power BI dashboard was created to present the project's analytical and machine learning results in a business-friendly format.
+
+The dashboard uses a dark professional theme with navy-blue accents and white typography.
+
+## Dashboard Title
+
+**KKBOX Subscription Churn & Cohort Analysis**
+
+### Subtitle
+
+**Customer Churn, Retention Behavior & Predictive Risk Insights**
+
+## Dashboard Components
+
+### KPI Cards
+
+The dashboard presents four key KPIs:
+
+- Total Customers — **200K**
+- Churned Customers — **13K**
+- Churn Rate — **6.39%**
+- Model ROC-AUC — **0.9465**
+
+### Interactive Filters
+
+Two slicers allow users to explore the analysis:
+
+- Signup Cohort
+- Churn Status
+
+### Analytical Visuals
+
+The dashboard includes:
+
+- Average Transaction Count by Churn Status
+- Cancellation Rate by Churn Status
+- Churn Rate by Signup Cohort
+- Customer Churn Distribution
+- Month 12 Activity Rate by Signup Cohort
+- Auto-Renewal Rate by Churn Status
+- Top Churn Drivers
+- Business Recommendations
+
+### Business Recommendations
+
+The dashboard translates the analysis into actionable recommendations:
+
+1. **Prioritize customers without auto-renewal**
+
+   Customers without auto-renewal had a **31.92% churn rate**, making renewal reminders and retention campaigns a key priority.
+
+2. **Monitor cancellation behavior**
+
+   Customers in the high-cancellation segment had an **82.37% churn rate**, making repeated cancellation activity an important warning signal.
+
+3. **Protect low-risk customers**
+
+   Customers with auto-renewal and no cancellation had only a **0.60% churn rate**. Maintaining a smooth renewal experience is important for this segment.
+
+4. **Focus on recent activity and renewal behavior**
+
+   The strongest Random Forest drivers include **Days Since Last Transaction, Auto-Renew Rate, and Cancel Rate**.
+
+## Dashboard Preview
+
+The completed Power BI dashboard is stored in the repository under:
+
+```text
+docs/kkbox_dashboard.png
+```
+
+![KKBOX Subscription Churn & Cohort Analysis](./docs/kkbox_dashboard.png)
 
 ---
 
@@ -401,25 +512,29 @@ subscription-churn-prediction-databricks/
 │   └── 10_business_insights
 │
 ├── sql/
+│
 ├── models/
+│
 └── docs/
+    └── kkbox_dashboard.png
 ```
 
 ---
 
 # Project Limitations
 
-- The project uses a deterministic 200,000-customer analytical scope rather than the complete original training population.
+- The project uses a deterministic **200,000-customer analytical scope** rather than the complete original training population.
 - User-log data was not used as a feature source for the churn ML model because the available extracted user-log file did not provide the required temporal coverage for the February 2017 churn cohort.
 - Customer-level churn probability scoring was not included because the exact original training preprocessing pipeline could not be safely reconstructed for full-population scoring.
 - Feature importance indicates model influence, not causal relationships.
+- The dashboard presents **Month 12 Activity Rate**, which should not be interpreted as literal subscription retention.
 - The project is an **automated batch analytics and ML pipeline**, not a real-time prediction system.
 
 ---
 
 # Project Status
 
-**Core analytics and machine learning pipeline: Complete**
+## Core Analytics, Machine Learning & Dashboard: Complete
 
 Completed:
 
@@ -430,11 +545,15 @@ Completed:
 - [x] Feature engineering
 - [x] Leakage-safe ML dataset
 - [x] Cohort analysis
-- [x] Retention analysis
+- [x] Activity analysis
 - [x] Churn prediction
 - [x] Model evaluation
 - [x] MLflow tracking
 - [x] Business insights
+- [x] Power BI dashboard
+- [x] Dashboard export
+- [x] Dashboard image added to repository
+- [x] README dashboard preview
 
 ---
 
@@ -442,8 +561,9 @@ Completed:
 
 **Sai Prakash Lingala**
 
-B.Tech in Artificial Intelligence  
-Aspiring Data Analyst | Data Analytics & Engineering | AI | SQL | Python | Power BI | Databricks
+B.Tech in Artificial Intelligence
+
+**Aspiring Data Analyst | Data Analytics & Engineering | AI | SQL | Python | Power BI | Databricks**
 
 - GitHub: https://github.com/saiprakash-db
 - LinkedIn: https://www.linkedin.com/in/sai-prakash-lingala-400854287
